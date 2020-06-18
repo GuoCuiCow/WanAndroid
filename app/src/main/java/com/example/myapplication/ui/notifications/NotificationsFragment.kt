@@ -1,31 +1,40 @@
 package com.example.myapplication.ui.notifications
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.example.myapplication.R
+import com.example.myapplication.base.BaseFragment
+import com.example.myapplication.data.User
+import kotlinx.android.synthetic.main.fragment_notifications.*
+import org.koin.android.viewmodel.ext.android.viewModel
 
-class NotificationsFragment : Fragment() {
+class NotificationsFragment : BaseFragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private val _viewModel: NotificationsViewModel by viewModel()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        notificationsViewModel =
-            ViewModelProviders.of(this).get(NotificationsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+    override fun getLayoutId() = R.layout.fragment_notifications
+
+    override fun initView() {
+        super.initView()
+        floatingActionButton.setOnClickListener {
+            val id = id_text.text.toString()
+            val firstNameText = first_name_text.text.toString()
+            val lastNameText = last_name_text.text.toString()
+            
+            if (id.isEmpty()) {
+                id_layout.error = "id不能为空"
+                return@setOnClickListener
+            }
+            if (firstNameText.isEmpty()) {
+                first_name_layout.error = "姓不能为空"
+                return@setOnClickListener
+            }
+            if (lastNameText.isEmpty()) {
+                last_name_layout.error = "名字不能为空"
+                return@setOnClickListener
+            }
+
+
+            val user =User(id.toInt(),firstNameText, lastNameText)
+            _viewModel.insert(user)
+        }
     }
 }

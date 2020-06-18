@@ -1,8 +1,8 @@
 package com.example.myapplication.data
 
-data class HomeListResponse(
+data class HomeListResponse<T>(
     val curPage: Int,
-    val datas: MutableList<HomeBean>,
+    val datas: MutableList<T>,
     val offset: Int,
     val over: Boolean,
     val pageCount: Int,

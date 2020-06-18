@@ -181,12 +181,13 @@ open class RequestViewModel : ViewModel() {
                 })
             } catch (e: Exception) {
                 e.printStackTrace()
-                emit(Result.Error(e))
+                emit(Result.Error<T>(e))
             } finally {
                 emit(Result.Finally())
             }
         }
     }
+
 
     protected open fun onApiLoading() {
         apiLoading.value = true
